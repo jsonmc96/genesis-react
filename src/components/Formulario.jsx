@@ -9,8 +9,9 @@ import TexfieldC from "./Input";
 import CheckboxC from "./Checkbox";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
-//import TableActions from "./Table";
+import DataTable from "./Table";
 import { useForm } from "react-hook-form";
+import { Fullscreen } from "@mui/icons-material";
 
 export default function Formulario() {
   const [misionList, setMisionList] = useState([]);
@@ -22,45 +23,38 @@ export default function Formulario() {
 
   const [columns, setColumns] = useState([
     {
-      title: "Primer Nombre",
-      field: "primerNombre",
-    },
-    {
-      title: "Segundo Nombre",
-      field: "segundoNombre",
-    },
-    {
-      title: "Apellido Paterno",
-      field: "Apaterno",
-    },
-    {
-      title: "Apellido Materno",
-      field: "AMaterno",
-    },
-    {
-      title: "¿Da estudio?",
+      headerName: "Da estudio",
       field: "estudios",
-      type: "boolean",
+      width: Fullscreen,
     },
     {
-      title: "¿Esta bautizado?",
+      headerName: "Esta bautizado",
       field: "bautizado",
-      type: "boolean",
+      width: Fullscreen,
     },
     {
-      title: "¿Recibe estudio biblico?",
+      headerName: "Recibe estudio biblico",
       field: "RecibEstudio",
-      type: "boolean",
+      width: Fullscreen,
     },
     {
-      title: "¿Esta suscrito al folleto Escuela Sabatica?",
+      headerName: "¿Esta suscrito al folleto Escuela Sabatica?",
       field: "folleto",
-      type: "boolean",
+      width: Fullscreen,
     },
     {
-      title: "¿Es lider?",
+      headerName: "lider",
       field: "lider",
-      type: "boolean",
+      width: Fullscreen,
+    },
+  ]);
+
+  //Aqui se almacena los integrantes del grupo
+  const [integrantes, setIntegrantes] = useState([
+    {
+      id: 1,
+      nombres: "mario esteban",
+      apellidos: "peres pres",
     },
   ]);
 
@@ -69,8 +63,6 @@ export default function Formulario() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const [data, setData] = useState([]); // Aqui se almacena los datos insertados en las tablas
 
   useEffect(() => {
     async function misionGet() {
@@ -244,7 +236,7 @@ export default function Formulario() {
                 </Box>
               </Grid>
 
-              <Grid container>
+              <Grid container={true}>
                 <Grid item xs={12} sm={12} md={12} lg={6}>
                   <Label texto="¿Cuántas personas su GP ya llevó al bautismo este año? "></Label>
                   <TexfieldC
@@ -296,47 +288,25 @@ export default function Formulario() {
                   type="number"
                 />
               </Grid>
+              <Grid container>
+                <SubCard spacing={1}>
+                  <Grid items xs={6} sm={4} md={6} lg={3}>
+                    <Label texto="Primer nombre"></Label>
+                    <TexfieldC
+                      name={"gpIntegranteRecibeEstudio"}
+                      nombre="Ingrese la cantidad"
+                      id="CantEstudiosBiblicos"
+                      type="number"
+                    />
+                  </Grid>
+                </SubCard>
+              </Grid>
 
               {/* simulacion de br */}
               <Grid container margin={1}></Grid>
               <Grid container padding={2} spacing={2}>
-                {/* <TableActions
-                  titulo="Miembros del grupo"
-                  columnas={columns}
-                  infor={data}
-                  agregar={{
-                    onRowAdd: (newData) =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                          setData([...data, newData]);
-
-                          resolve();
-                        }, 1000);
-                      }),
-                    onRowUpdate: (newData, oldData) =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                          const dataUpdate = [...data];
-                          const index = oldData.tableData.id;
-                          dataUpdate[index] = newData;
-                          setData([...dataUpdate]);
-
-                          resolve();
-                        }, 1000);
-                      }),
-                    onRowDelete: (oldData) =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                          const dataDelete = [...data];
-                          const index = oldData.tableData.id;
-                          dataDelete.splice(index, 1);
-                          setData([...dataDelete]);
-
-                          resolve();
-                        }, 1000);
-                      }),
-                  }}
-                ></TableActions> */}
+                {/* Tabla de datos */}
+                <DataTable columns={columns} rows={integrantes}></DataTable>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <Button variant="contained" type="submit">
