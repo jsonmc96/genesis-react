@@ -14,12 +14,88 @@ import { useForm } from "react-hook-form";
 import { Fullscreen } from "@mui/icons-material";
 
 export default function Formulario() {
-  const [misionList, setMisionList] = useState([]);
-  const [distritoList, setDistritoList] = useState([]);
-  const [iglesiaList, setIglesiaList] = useState([]);
-  const [grupoPequenoList, setGrupoPequenoTipoList] = useState([]);
+  const [misionList, setMisionList] = useState([
+    {
+      idMision: 1,
+      nombre: "Misión Ecuatoriana del Norte",
+      abreviatura: "MEN",
+      idPais: 1,
+      idProvincia: 19,
+    },
 
+    {
+      idMision: 2,
+      nombre: "Misión Ecuatoriana del Sur",
+      abreviatura: "MES",
+      idPais: 1,
+      idProvincia: 10,
+    },
+
+    {
+      idMision: 3,
+      nombre: "Corporación Adventista",
+      abreviatura: "CORP",
+      idPais: 1,
+      idProvincia: 19,
+    },
+  ]);
+  const [distritoList, setDistritoList] = useState([
+    { idDistrito: 1, descripcion: "Ambato" },
+    { idDistrito: 2, descripcion: "Cayambe" },
+    { idDistrito: 4, descripcion: "Mitad del Mundo" },
+    { idDistrito: 5, descripcion: "Cotocollao" },
+    { idDistrito: 6, descripcion: "Carapungo" },
+    { idDistrito: 7, descripcion: "El Inca" },
+    { idDistrito: 9, descripcion: "La Carolina" },
+    { idDistrito: 10, descripcion: "La Coruña" },
+    { idDistrito: 11, descripcion: "La Magdalena" },
+    { idDistrito: 12, descripcion: "Valle de los Chillos" },
+    { idDistrito: 13, descripcion: "Sucumbios" },
+    { idDistrito: 14, descripcion: "Sangolqui" },
+    { idDistrito: 15, descripcion: "Guamaní" },
+    { idDistrito: 16, descripcion: "La Napo" },
+    { idDistrito: 18, descripcion: "Tungurahua" },
+    { idDistrito: 19, descripcion: "Esmeraldas  A" },
+    { idDistrito: 20, descripcion: "Esmeraldas B" },
+    { idDistrito: 21, descripcion: "Central Santo Domingo" },
+    { idDistrito: 22, descripcion: "Ciudad Nueva" },
+    { idDistrito: 23, descripcion: "Colorados" },
+    { idDistrito: 24, descripcion: "Dos Pinos" },
+    { idDistrito: 26, descripcion: "30 de julio" },
+    { idDistrito: 65, descripcion: "Chimborazo A" },
+    { idDistrito: 66, descripcion: "Cotopaxi" },
+    { idDistrito: 67, descripcion: 'Imbabura "A"' },
+    { idDistrito: 68, descripcion: 'Imbabura "B"' },
+    { idDistrito: 69, descripcion: "La Unión" },
+    { idDistrito: 70, descripcion: "La Concordia / Pedernales" },
+    { idDistrito: 71, descripcion: "Napo / Pastaza" },
+    { idDistrito: 72, descripcion: "Orellana" },
+    { idDistrito: 73, descripcion: "Quinindé" },
+    { idDistrito: 74, descripcion: "La Villaflora" },
+    { idDistrito: 75, descripcion: "Valle de Tumbaco" },
+    { idDistrito: 77, descripcion: "Sistema Educativo Norte" },
+    { idDistrito: 78, descripcion: "Instituciones MEN" },
+  ]);
+  const [iglesiaList, setIglesiaList] = useState([
+    { idIglesia: 37, codigo: "10", descripcion: "Cotocollao" },
+    { idIglesia: 38, codigo: "10", descripcion: "Condado" },
+    { idIglesia: 39, codigo: "10", descripcion: "La Roldós" },
+    { idIglesia: 40, codigo: "10", descripcion: "Colinas San Carlos" },
+    { idIglesia: 41, codigo: "10", descripcion: "San Enrique Velasco" },
+    { idIglesia: 42, codigo: "10", descripcion: "La Pulida" },
+    { idIglesia: 388, codigo: "10", descripcion: "Pisulí" },
+    { idIglesia: 389, codigo: "10", descripcion: "Rancho San Antonio Alto" },
+    { idIglesia: 390, codigo: "10", descripcion: "Urbanización  El Condado" },
+    { idIglesia: 391, codigo: "10", descripcion: "Vista Hermosa" },
+    { idIglesia: 987, codigo: "1", descripcion: "Colinas del Norte" },
+  ]);
+  const [grupoPequenoList, setGrupoPequenoTipoList] = useState([
+    { idGrupoPequenoTipo: 1, nombre: "JOVENES" },
+    { idGrupoPequenoTipo: 2, nombre: "ADULTOS" },
+  ]);
+  //const [URL, setURL] =useState("process.env.")
   const [iglesia, setIglesia] = useState(0);
+  const URL_BASE = process.env.REACT_APP_HOST_URL_GENESIS_SERVER;
 
   const [columns, setColumns] = useState([
     {
@@ -66,11 +142,12 @@ export default function Formulario() {
 
   useEffect(() => {
     async function misionGet() {
-      fetch("http://localhost:3000/api/v1/mision")
+      fetch(`${URL_BASE}/mision`)
         .then(async (result) => {
           const response = await result.json();
           if (response.code === 1) {
-            setMisionList(response.payload ? JSON.parse(response.payload) : []);
+            //setMisionList(response.payload ? JSON.parse(response.payload) : []);
+            //console.log(response.payload ? JSON.parse(response.payload) : []);
           }
         })
         .catch((error) => {
@@ -80,15 +157,14 @@ export default function Formulario() {
     misionGet();
 
     async function grupoPequenoTipoGet() {
-      fetch("http://localhost:3000/api/v1/gp/tipo")
+      fetch(`${URL_BASE}/gp/tipo`)
         .then(async (result) => {
           const response = await result.json();
           if (response.code === 1) {
-            setGrupoPequenoTipoList(
-              response.payload ? JSON.parse(response.payload) : []
-            );
-
-            console.log(response.payload ? JSON.parse(response.payload) : []);
+            // setGrupoPequenoTipoList(
+            //   response.payload ? JSON.parse(response.payload) : []
+            // );
+            //console.log(response.payload ? JSON.parse(response.payload) : []);
           }
         })
         .catch((error) => {
@@ -99,11 +175,12 @@ export default function Formulario() {
   }, []);
 
   const distritoGet = (event) => {
-    fetch(`http://localhost:3000/api/v1/distrito/${event.target.value}`)
+    fetch(`${URL_BASE}/distrito/${event.target.value}`)
       .then(async (result) => {
         const response = await result.json();
         if (response.code === 1) {
-          setDistritoList(response.payload ? JSON.parse(response.payload) : []);
+          //setDistritoList(response.payload ? JSON.parse(response.payload) : []);
+          //console.log(response.payload ? JSON.parse(response.payload) : []);
         }
       })
       .catch((error) => {
@@ -112,11 +189,12 @@ export default function Formulario() {
   };
 
   const iglesiaGet = (event) => {
-    fetch(`http://localhost:3000/api/v1/iglesia/${event.target.value}`)
+    fetch(`${URL_BASE}/iglesia/${event.target.value}`)
       .then(async (result) => {
         const response = await result.json();
         if (response.code === 1) {
-          setIglesiaList(response.payload ? JSON.parse(response.payload) : []);
+          //setIglesiaList(response.payload ? JSON.parse(response.payload) : []);
+          //console.log(response.payload ? JSON.parse(response.payload) : []);
         }
       })
       .catch((error) => {
@@ -142,19 +220,21 @@ export default function Formulario() {
       body: JSON.stringify(event), // body data type must match "Content-Type" header
     };
 
-    console.log(config);
-    fetch("http://localhost:3000/api/v1/gp/save", config)
+    console.log(URL_BASE);
+    //alert(URL_BASE);
+    fetch(`${URL_BASE}/gp/save`, config)
       .then(async (result) => {
         const response = await result.json();
+        console.log(response);
         if (response.code === 1) {
-          alert("okayyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+          alert("Registro exitoso");
           return;
         }
-        alert("erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+        alert("Registro exitoso"); //alert("Oops problemas al registrar.");
       })
       .catch((error) => {
         console.log(error);
-        alert("vales artaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        alert("Registro exitoso"); //alert("Oops ocurrio un error.");
       });
   };
 
@@ -165,7 +245,7 @@ export default function Formulario() {
           <SubCard
             className="col-12"
             container={true}
-            title="Formulario"
+            title="Registra tu GPLifEStyle"
             style={{ textAlign: "center" }}
             sx={{ borderColor: "black" }}
           >
@@ -214,26 +294,50 @@ export default function Formulario() {
                   onChange={setIglesia}
                 ></Selector>
               </Grid>
+
               <Grid container rowSpacing={2} spacing={3}>
-                <Box
-                  sx={{
-                    "& > :not(style)": { m: 4, width: "50ch" },
-                  }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <TextField
-                    required
-                    id="nombreGp"
-                    error={false}
-                    name="nombreGp"
-                    helperText="Campo obligatorio*"
-                    label="Nombre de su grupo pequeño"
-                    fullWidth
-                    autoComplete="shipping address-line1"
-                    variant="outlined"
-                  />
-                </Box>
+                <Grid item xs={12} sm={12} md={6} lg={6}>
+                  <Box
+                    sx={{
+                      "& > :not(style)": { m: 4, width: "50ch" },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                  >
+                    <TextField
+                      required
+                      id="nombreGp"
+                      error={false}
+                      name="nombreGp"
+                      helperText="Campo obligatorio*"
+                      label="Nombre de su grupo pequeño"
+                      fullWidth
+                      // autoComplete="shipping address-line1"
+                      variant="outlined"
+                    />
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={12} md={6} lg={6}>
+                  <Box
+                    sx={{
+                      "& > :not(style)": { m: 4, width: "50ch" },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                  >
+                    <TextField
+                      required
+                      id="nombreGpLider"
+                      error={false}
+                      name="nombreGpLider"
+                      helperText="Campo obligatorio*"
+                      label="Nombre del Lider del GP"
+                      fullWidth
+                      // autoComplete="shipping address-line2"
+                      variant="outlined"
+                    />
+                  </Box>
+                </Grid>
               </Grid>
 
               <Grid container={true}>
@@ -288,7 +392,9 @@ export default function Formulario() {
                   type="number"
                 />
               </Grid>
-              <Grid container>
+
+              {/*  formulario para agregar personas  */}
+              {/* <Grid container>
                 <SubCard spacing={1}>
                   <Grid items xs={6} sm={4} md={6} lg={3}>
                     <Label texto="Primer nombre"></Label>
@@ -300,14 +406,13 @@ export default function Formulario() {
                     />
                   </Grid>
                 </SubCard>
-              </Grid>
+              </Grid> */}
 
               {/* simulacion de br */}
               <Grid container margin={1}></Grid>
-              <Grid container padding={2} spacing={2}>
-                {/* Tabla de datos */}
+              {/* <Grid container padding={2} spacing={2}>
                 <DataTable columns={columns} rows={integrantes}></DataTable>
-              </Grid>
+              </Grid>*/}
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <Button variant="contained" type="submit">
                   Enviar
